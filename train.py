@@ -19,7 +19,7 @@ patience = 50
 
 if __name__ == '__main__':
     # build a classifier model
-    model = densenet169_model(img_height, img_width, num_channels, num_classes)
+    model = densenet169_model(img_rows=img_height, img_cols=img_width, color_type=num_channels, num_classes=num_classes)
 
     # prepare data augmentation configuration
     train_data_gen = ImageDataGenerator(rotation_range=20.,
