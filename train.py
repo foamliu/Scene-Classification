@@ -71,6 +71,7 @@ if __name__ == '__main__':
         steps_per_epoch=num_train_samples / batch_size,
         validation_data=valid_generator,
         validation_steps=num_valid_samples / batch_size,
+        shuffle=True,
         epochs=num_epochs,
         callbacks=callbacks,
         verbose=verbose)
