@@ -3,7 +3,8 @@ from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.callbacks import ReduceLROnPlateau
 from keras.preprocessing.image import ImageDataGenerator
 
-from resnet_152 import resnet152_model
+from model import build_model
+from migrate import migrate_model
 
 img_width, img_height = 320, 320
 num_channels = 3
@@ -32,7 +33,8 @@ if __name__ == '__main__':
     valid_generator = valid_data_gen.flow_from_directory(valid_data, (img_width, img_height), batch_size=batch_size,
                                                          class_mode='categorical', shuffle=True)
 
-    model = resnet152_model(img_rows=img_height, img_cols=img_width, color_type=num_channels, num_classes=num_classes)
+    model = build_model(img_rows=img_height, img_cols=img_width, color_type=num_channels, num_classes=num_classes)
+    migrate_model(model)
 
     # Callbacks
     tensor_board = keras.callbacks.TensorBoard(log_dir='./logs', histogram_freq=0, write_graph=True, write_images=True)
