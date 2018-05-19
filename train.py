@@ -15,7 +15,7 @@ num_classes = 80
 num_train_samples = 53879
 num_valid_samples = 7120
 verbose = 1
-batch_size = 16
+batch_size = 8
 num_epochs = 100000
 patience = 50
 
@@ -34,27 +34,27 @@ if __name__ == '__main__':
     valid_generator = valid_data_gen.flow_from_directory(valid_data, (img_width, img_height), batch_size=batch_size,
                                                          class_mode='categorical')
 
-    class MyCbk(keras.callbacks.Callback):
-        def __init__(self, model):
-            keras.callbacks.Callback.__init__(self)
-            self.model_to_save = model
-
-        def on_epoch_end(self, epoch, logs=None):
-            fmt = 'models/' + 'model.%02d-%.4f.hdf5'
-            self.model_to_save.save(fmt % (epoch, logs['val_acc']))
-
-    # build a classifier model
-    num_gpu = len(get_available_gpus())
-    if num_gpu >= 2:
-        with tf.device("/cpu:0"):
-            model = densenet169_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
-                                      num_classes=num_classes)
-
-        new_model = multi_gpu_model(model, gpus=num_gpu)
-        # rewrite the callback: saving through the original model and not the multi-gpu model.
-        model_checkpoint = MyCbk(model)
-    else:
-        model = densenet169_model(img_rows=img_height, img_cols=img_width, color_type=num_channels, num_classes=num_classes)
+    # class MyCbk(keras.callbacks.Callback):
+    #     def __init__(self, model):
+    #         keras.callbacks.Callback.__init__(self)
+    #         self.model_to_save = model
+    #
+    #     def on_epoch_end(self, epoch, logs=None):
+    #         fmt = 'models/' + 'model.%02d-%.4f.hdf5'
+    #         self.model_to_save.save(fmt % (epoch, logs['val_acc']))
+    #
+    # # build a classifier model
+    # num_gpu = len(get_available_gpus())
+    # if num_gpu >= 2:
+    #     with tf.device("/cpu:0"):
+    #         model = densenet169_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
+    #                                   num_classes=num_classes)
+    #
+    #     new_model = multi_gpu_model(model, gpus=num_gpu)
+    #     # rewrite the callback: saving through the original model and not the multi-gpu model.
+    #     model_checkpoint = MyCbk(model)
+    # else:
+    model = densenet169_model(img_rows=img_height, img_cols=img_width, color_type=num_channels, num_classes=num_classes)
 
     # Callbacks
     tensor_board = keras.callbacks.TensorBoard(log_dir='./logs', histogram_freq=0, write_graph=True, write_images=True)
