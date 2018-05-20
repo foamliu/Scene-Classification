@@ -2,6 +2,7 @@ import keras
 import tensorflow as tf
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.callbacks import ReduceLROnPlateau
+from keras.optimizers import SGD
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import multi_gpu_model
 
@@ -66,6 +67,9 @@ if __name__ == '__main__':
     else:
         model = resnet152_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
                                 num_classes=num_classes)
+
+    sgd = SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
+    model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
 
     callbacks = [tensor_board, model_checkpoint, early_stop, reduce_lr]
 
