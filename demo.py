@@ -7,8 +7,7 @@ import cv2 as cv
 import keras.backend as K
 import numpy as np
 
-from model import build_model
-from migrate import migrate_model
+from resnet_152 import resnet152_model
 from utils import draw_str
 
 if __name__ == '__main__':
@@ -16,8 +15,8 @@ if __name__ == '__main__':
     num_channels = 3
     num_classes = 80
 
-    model = build_model(img_rows=img_height, img_cols=img_width, color_type=num_channels, num_classes=num_classes)
-    migrate_model(model)
+    model = resnet152_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
+                            num_classes=num_classes)
     model.load_weights('models/model.96-0.89.hdf5')
 
     with open('scene_classes.csv') as file:
