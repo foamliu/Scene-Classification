@@ -53,7 +53,7 @@ if __name__ == '__main__':
     reduce_lr = ReduceLROnPlateau('val_loss', factor=0.1, patience=int(patience / 4), verbose=1)
     trained_models_path = 'models/model'
     model_names = trained_models_path + '.{epoch:02d}-{val_loss:.4f}.hdf5'
-    model_checkpoint = ModelCheckpoint(model_names, monitor='val_acc', verbose=1, save_best_only=True)
+    model_checkpoint = ModelCheckpoint(model_names, monitor='val_loss', verbose=1, save_best_only=True)
 
     num_gpu = len(get_available_gpus())
     if num_gpu >= 2:
