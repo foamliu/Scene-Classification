@@ -7,21 +7,21 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import multi_gpu_model
 
 from resnet_152 import resnet152_model
-from utils import get_available_gpus
-
-img_width, img_height = 320, 320
-num_channels = 3
-train_data = 'data/train'
-valid_data = 'data/valid'
-num_classes = 80
-num_train_samples = 53879
-num_valid_samples = 7120
-verbose = 1
-batch_size = 12
-num_epochs = 1000
-patience = 50
+from utils import get_available_gpus, get_available_cpus
 
 if __name__ == '__main__':
+    img_width, img_height = 320, 320
+    num_channels = 3
+    train_data = 'data/train'
+    valid_data = 'data/valid'
+    num_classes = 80
+    num_train_samples = 53879
+    num_valid_samples = 7120
+    verbose = 1
+    batch_size = 12
+    num_epochs = 1000
+    patience = 50
+
     # prepare data augmentation configuration
     train_data_gen = ImageDataGenerator(rotation_range=20.,
                                         width_shift_range=0.1,
@@ -44,16 +44,16 @@ if __name__ == '__main__':
 
         def on_epoch_end(self, epoch, logs=None):
             fmt = 'models/model.%02d-%.4f.hdf5'
-            self.model_to_save.save(fmt % (epoch, logs['val_loss']))
+            self.model_to_save.save(fmt % (epoch, logs['val_acc']))
 
 
     # Callbacks
     tensor_board = keras.callbacks.TensorBoard(log_dir='./logs', histogram_freq=0, write_graph=True, write_images=True)
-    early_stop = EarlyStopping('val_loss', patience=patience)
-    reduce_lr = ReduceLROnPlateau('val_loss', factor=0.1, patience=int(patience / 4), verbose=1)
+    early_stop = EarlyStopping('val_acc', patience=patience)
+    reduce_lr = ReduceLROnPlateau('val_acc', factor=0.1, patience=int(patience / 4), verbose=1)
     trained_models_path = 'models/model'
-    model_names = trained_models_path + '.{epoch:02d}-{val_loss:.4f}.hdf5'
-    model_checkpoint = ModelCheckpoint(model_names, monitor='val_loss', verbose=1, save_best_only=True)
+    model_names = trained_models_path + '.{epoch:02d}-{val_acc:.4f}.hdf5'
+    model_checkpoint = ModelCheckpoint(model_names, monitor='val_acc', verbose=1, save_best_only=True)
 
     num_gpu = len(get_available_gpus())
     if num_gpu >= 2:
@@ -82,4 +82,6 @@ if __name__ == '__main__':
         shuffle=True,
         epochs=num_epochs,
         callbacks=callbacks,
-        verbose=verbose)
+        verbose=verbose,
+        use_multiprocessing=True,
+        workers=int(round(get_available_cpus() / 2)))
