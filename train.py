@@ -18,7 +18,7 @@ if __name__ == '__main__':
     num_train_samples = 53879
     num_valid_samples = 7120
     verbose = 1
-    batch_size = 20
+    batch_size = 16
     num_epochs = 10
     patience = 50
 
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     # Callbacks
     tensor_board = keras.callbacks.TensorBoard(log_dir='./logs', histogram_freq=0, write_graph=True, write_images=True)
     early_stop = EarlyStopping('val_acc', patience=patience)
-    # reduce_lr = ReduceLROnPlateau('val_acc', factor=0.1, patience=int(patience / 4), verbose=1)
+    reduce_lr = ReduceLROnPlateau('val_acc', factor=0.1, patience=int(patience / 4), verbose=1)
     trained_models_path = 'models/model'
     model_names = trained_models_path + '.{epoch:02d}-{val_acc:.4f}.hdf5'
     model_checkpoint = ModelCheckpoint(model_names, monitor='val_acc', verbose=1, save_best_only=True)
@@ -71,8 +71,8 @@ if __name__ == '__main__':
     sgd = SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
     new_model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
 
-    # callbacks = [tensor_board, model_checkpoint, early_stop, reduce_lr]
-    callbacks = [tensor_board]
+    callbacks = [tensor_board, model_checkpoint, early_stop, reduce_lr]
+
 
     # fine tune the model
     new_model.fit_generator(
