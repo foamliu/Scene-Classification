@@ -7,7 +7,7 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import multi_gpu_model
 
 from resnet_152 import resnet152_model
-from utils import get_available_gpus, get_available_cpus
+from utils import get_available_gpus
 
 if __name__ == '__main__':
     img_width, img_height = 320, 320
@@ -66,13 +66,12 @@ if __name__ == '__main__':
         model_checkpoint = MyCbk(model)
     else:
         new_model = resnet152_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
-                                num_classes=num_classes)
+                                    num_classes=num_classes)
 
     sgd = SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
     new_model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
 
     callbacks = [tensor_board, model_checkpoint, early_stop, reduce_lr]
-
 
     # fine tune the model
     new_model.fit_generator(
@@ -86,4 +85,3 @@ if __name__ == '__main__':
         verbose=verbose,
         use_multiprocessing=True,
         workers=2)
-
