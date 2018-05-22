@@ -23,12 +23,14 @@ if __name__ == '__main__':
     patience = 50
 
     # prepare data augmentation configuration
-    train_data_gen = ImageDataGenerator(rotation_range=20.,
+    train_data_gen = ImageDataGenerator(rescale=1. / 255,
+                                        shear_range=0.2,
+                                        rotation_range=20.,
                                         width_shift_range=0.1,
                                         height_shift_range=0.1,
                                         zoom_range=0.2,
                                         horizontal_flip=True)
-    valid_data_gen = ImageDataGenerator()
+    valid_data_gen = ImageDataGenerator(rescale=1. / 255)
 
     # generators
     train_generator = train_data_gen.flow_from_directory(train_data, (img_width, img_height), batch_size=batch_size,

@@ -14,12 +14,12 @@ This repository is to do scene classification by fine-tuning ResNet-152 with Car
 
 We use the Cars Dataset, which contains 16,185 images of 196 classes of cars. The data is split into 8,144 training images and 8,041 testing images, where each class has been split roughly in a 50-50 split.
 
- ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/random.jpg)
+ ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/random.jpg)
 
 You can get it from [Cars Dataset](https://ai.stanford.edu/~jkrause/cars/car_dataset.html):
 
 ```bash
-$ cd Car-Recognition
+$ cd Scene-Classification
 $ wget http://imagenet.stanford.edu/internal/car196/cars_train.tgz
 $ wget http://imagenet.stanford.edu/internal/car196/cars_test.tgz
 $ wget --no-check-certificate https://ai.stanford.edu/~jkrause/cars/car_devkit.tgz
@@ -47,7 +47,7 @@ If you want to visualize during training, run in your terminal:
 $ tensorboard --logdir path_to_current_dir/logs
 ```
 
- ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/train.jpg)
+ ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/train.jpg)
 
 ### Analysis
 Update "model_weights_path" in "utils.py" with your best model, and use 1,629 validation images for result analysis:
@@ -60,7 +60,7 @@ $ python analyze.py
 
 #### Confusion matrix:
 
- ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/confusion_matrix.jpg)
+ ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/confusion_matrix.jpg)
 
 ### Test
 ```bash
@@ -72,30 +72,20 @@ Submit predictions of test data set (8,041 testing images) at [Cars Dataset](htt
 #### Test acc:
 **88.88%**
 
- ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/test.jpg)
+ ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/test.jpg)
 
 ### Demo
-Download [pre-trained model](https://github.com/foamliu/Car-Recognition/releases/download/v1.0/model.96-0.89.hdf5) into "models" folder then run:
-
-```bash
-$ python demo.py --i [image_path]
-```
-If no argument, a sample image is used:
-
- ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/samples/07647.jpg)
+Download [pre-trained model](https://github.com/foamliu/Scene-Classification/releases/download/v1.0/model.96-0.89.hdf5) into "models" folder then run:
 
 ```bash
 $ python demo.py
-class_name: Lamborghini Reventon Coupe 2008
-prob: 0.9999994
 ```
 
-1 | 2 | 3 |
-|---|---|---|
-|![image](https://github.com/foamliu/Car-Recognition/raw/master/images/0_out.png)  | ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/1_out.png) | ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/2_out.png)|
-| ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/3_out.png) |![image](https://github.com/foamliu/Car-Recognition/raw/master/images/4_out.png)  | ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/5_out.png) |
-|![image](https://github.com/foamliu/Car-Recognition/raw/master/images/6_out.png)| ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/7_out.png) | ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/8_out.png)  |
-| ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/9_out.png) |![image](https://github.com/foamliu/Car-Recognition/raw/master/images/10_out.png) | ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/11_out.png)|
-|![image](https://github.com/foamliu/Car-Recognition/raw/master/images/12_out.png)  | ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/13_out.png) |![image](https://github.com/foamliu/Car-Recognition/raw/master/images/14_out.png)|
-|![image](https://github.com/foamliu/Car-Recognition/raw/master/images/15_out.png)| ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/16_out.png) | ![image](https://github.com/foamliu/Car-Recognition/raw/master/images/17_out.png) |
+1 | 2 | 3 | 4 |
+|---|---|---|---|
+|![image](https://github.com/foamliu/Scene-Classification/raw/master/images/0_out.png)  | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/1_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/2_out.png)| ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/3_out.png) |
+|![image](https://github.com/foamliu/Scene-Classification/raw/master/images/4_out.png)  | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/5_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/6_out.png)| ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/7_out.png) |
+|![image](https://github.com/foamliu/Scene-Classification/raw/master/images/8_out.png)  | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/9_out.png) |![image](https://github.com/foamliu/Scene-Classification/raw/master/images/10_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/11_out.png)|
+|![image](https://github.com/foamliu/Scene-Classification/raw/master/images/12_out.png)  | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/13_out.png) |![image](https://github.com/foamliu/Scene-Classification/raw/master/images/14_out.png)| ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/15_out.png)|
+|![image](https://github.com/foamliu/Scene-Classification/raw/master/images/16_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/17_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/18_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/19_out.png) |
 
