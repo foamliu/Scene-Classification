@@ -11,7 +11,7 @@ from resnet_152 import resnet152_model
 from utils import draw_str
 
 if __name__ == '__main__':
-    img_width, img_height = 320, 320
+    img_width, img_height = 1000, 1000
     num_channels = 3
     num_classes = 80
 
@@ -38,7 +38,7 @@ if __name__ == '__main__':
         filename = os.path.join(test_path, image_name)
         print('Start processing image: {}'.format(filename))
         image = cv.imread(filename)
-        rgb_img = cv.cvtColor(image, cv.COLOR_BGR2RGB)
+        rgb_img = cv.cvtColor(image, cv.COLOR_BGR2RGB) / 255.
         rgb_img = np.expand_dims(rgb_img, 0)
         preds = model.predict(rgb_img)
         prob = np.max(preds)

@@ -10,7 +10,7 @@ from resnet_152 import resnet152_model
 from utils import get_available_gpus
 
 if __name__ == '__main__':
-    img_width, img_height = 320, 320
+    img_width, img_height = 1000, 1000
     num_channels = 3
     train_data = 'data/train'
     valid_data = 'data/valid'
