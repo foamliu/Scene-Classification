@@ -1,7 +1,7 @@
 import json
 import os
 import zipfile
-
+from config import img_height, img_width
 import cv2 as cv
 from console_progressbar import ProgressBar
 
@@ -37,7 +37,7 @@ def extract(usage, package, image_path, json_path):
             os.makedirs(dst_path)
         dst_path = os.path.join(dst_path, image_name)
         src_image = cv.imread(src_path)
-        dst_image = cv.resize(src_image, (320, 320), cv.INTER_CUBIC)
+        dst_image = cv.resize(src_image, (img_height, img_width), cv.INTER_CUBIC)
         cv.imwrite(dst_path, dst_image)
         pb.print_progress_bar((i + 1) * 100 / num_samples)
 
@@ -68,7 +68,7 @@ def extract_test(usage, package, image_path, json_path):
         label_dict[image_name] = label
         dst_path = os.path.join(dst_folder, image_name)
         src_image = cv.imread(src_path)
-        dst_image = cv.resize(src_image, (320, 320), cv.INTER_CUBIC)
+        dst_image = cv.resize(src_image, (img_height, img_width), cv.INTER_CUBIC)
         cv.imwrite(dst_path, dst_image)
         pb.print_progress_bar((i + 1) * 100 / num_samples)
     with open('label_dict.txt', 'w') as outfile:

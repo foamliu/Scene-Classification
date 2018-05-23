@@ -139,15 +139,15 @@ def resnet50_model(img_rows, img_cols, color_type=1, num_classes=None):
     # Create model
     model = Model(img_input, x_fc)
 
-    # Load ImageNet pre-trained data 
-    if K.image_dim_ordering() == 'th':
-        # Use pre-trained weights for Theano backend
-        weights_path = 'models/resnet50_weights_th_dim_ordering_th_kernels.h5'
-    else:
-        # Use pre-trained weights for Tensorflow backend
-        weights_path = 'models/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
-
-    model.load_weights(weights_path)
+    # # Load ImageNet pre-trained data
+    # if K.image_dim_ordering() == 'th':
+    #     # Use pre-trained weights for Theano backend
+    #     weights_path = 'models/resnet50_weights_th_dim_ordering_th_kernels.h5'
+    # else:
+    #     # Use pre-trained weights for Tensorflow backend
+    #     weights_path = 'models/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
+    #
+    # model.load_weights(weights_path)
 
     # Truncate and replace softmax layer for transfer learning
     # Cannot use model.layers.pop() since model is not of Sequential() type
