@@ -80,7 +80,7 @@ def conv_block(input_tensor, kernel_size, filters, stage, block, strides=(2, 2))
     return x
 
 
-def resnet50_model(img_rows, img_cols, color_type=1, num_classes=None):
+def resnet50_model_old(img_rows, img_cols, color_type=1, num_classes=None):
     """
     Resnet 50 Model for Keras
 
@@ -149,9 +149,60 @@ def resnet50_model(img_rows, img_cols, color_type=1, num_classes=None):
 
     model.load_weights(weights_path)
 
-    # Truncate and replace softmax layer for transfer learning
-    # Cannot use model.layers.pop() since model is not of Sequential() type
-    # The method below works since pre-trained weights are stored in layers but not in the model
+    return model
+
+
+def resnet50_model_new(img_rows, img_cols, color_type, num_classes):
+    """
+    Resnet 50 Model for Keras
+
+    Model Schema is based on
+    https://github.com/fchollet/deep-learning-models/blob/master/resnet50.py
+
+    ImageNet Pretrained Weights
+    https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_th_dim_ordering_th_kernels.h5
+
+    Parameters:
+      img_rows, img_cols - resolution of inputs
+      channel - 1 for grayscale, 3 for color
+      num_classes - number of class labels for our classification task
+    """
+
+    # Handle Dimension Ordering for different backends
+    global bn_axis
+    if K.image_dim_ordering() == 'tf':
+        bn_axis = 3
+        img_input = Input(shape=(img_rows, img_cols, color_type))
+    else:
+        bn_axis = 1
+        img_input = Input(shape=(color_type, img_rows, img_cols))
+
+    x = ZeroPadding2D((3, 3))(img_input)
+    x = Conv2D(64, (7, 7), strides=(2, 2), name='conv1')(x)
+    x = BatchNormalization(axis=bn_axis, name='bn_conv1')(x)
+    x = Activation('relu')(x)
+    x = MaxPooling2D((3, 3), strides=(2, 2))(x)
+
+    x = conv_block(x, 3, [64, 64, 256], stage=2, block='a', strides=(1, 1))
+    x = identity_block(x, 3, [64, 64, 256], stage=2, block='b')
+    x = identity_block(x, 3, [64, 64, 256], stage=2, block='c')
+
+    x = conv_block(x, 3, [128, 128, 512], stage=3, block='a')
+    x = identity_block(x, 3, [128, 128, 512], stage=3, block='b')
+    x = identity_block(x, 3, [128, 128, 512], stage=3, block='c')
+    x = identity_block(x, 3, [128, 128, 512], stage=3, block='d')
+
+    x = conv_block(x, 3, [256, 256, 1024], stage=4, block='a')
+    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='b')
+    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='c')
+    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='d')
+    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='e')
+    x = identity_block(x, 3, [256, 256, 1024], stage=4, block='f')
+
+    x = conv_block(x, 3, [512, 512, 2048], stage=5, block='a')
+    x = identity_block(x, 3, [512, 512, 2048], stage=5, block='b')
+    x = identity_block(x, 3, [512, 512, 2048], stage=5, block='c')
+
     x_newfc = AveragePooling2D((7, 7), name='avg_pool')(x)
     x_newfc = Flatten()(x_newfc)
     x_newfc = Dense(num_classes, activation='softmax', name='fc10')(x_newfc)
