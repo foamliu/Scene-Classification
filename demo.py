@@ -11,7 +11,7 @@ from resnet_152 import resnet152_model
 from utils import draw_str
 
 if __name__ == '__main__':
-    img_width, img_height = 1000, 1000
+    img_width, img_height = 640, 640
     num_channels = 3
     num_classes = 80
 
