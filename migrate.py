@@ -1,11 +1,11 @@
 import keras.backend as K
 
-from config import img_height, img_width
+from config import img_height, img_width, num_classes
 from resnet_50 import resnet50_model
 
 
 def migrate_model(new_model):
-    old_model = resnet50_model(224, 224, 3)
+    old_model = resnet50_model(224, 224, 3, num_classes=num_classes)
     # print(old_model.summary())
     old_layers = [l for l in old_model.layers]
     new_layers = [l for l in new_model.layers]

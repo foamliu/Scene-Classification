@@ -53,7 +53,6 @@ if __name__ == '__main__':
         with tf.device("/cpu:0"):
             model = resnet50_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
                                    num_classes=num_classes)
-            migrate_model(model)
 
         new_model = multi_gpu_model(model, gpus=num_gpu)
         # rewrite the callback: saving through the original model and not the multi-gpu model.
@@ -61,7 +60,6 @@ if __name__ == '__main__':
     else:
         new_model = resnet50_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
                                    num_classes=num_classes)
-        migrate_model(new_model)
 
     sgd = SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
     new_model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
