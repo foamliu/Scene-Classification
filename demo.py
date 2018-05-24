@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     model = resnet50_model_new(img_rows=img_height, img_cols=img_width, color_type=num_channels,
                                num_classes=num_classes)
-    model.load_weights('models/model.06-0.7459.hdf5')
+    model.load_weights('models/model.07-0.7091.hdf5')
 
     with open('scene_classes.csv') as file:
         reader = csv.reader(file)
