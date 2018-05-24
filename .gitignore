@@ -1,3 +1,7 @@
 .idea/
 data/
 models/
+__pycache__/
+custom_layers/__pycache__/
+label_dict.txt
+logs/

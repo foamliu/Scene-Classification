@@ -33,6 +33,9 @@ if __name__ == '__main__':
     num_samples = 20
     samples = random.sample(test_images, num_samples)
 
+    if not os.path.exists('images'):
+        os.makedirs('images')
+
     for i in range(len(samples)):
         image_name = samples[i]
         filename = os.path.join(test_path, image_name)
