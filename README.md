@@ -1,6 +1,6 @@
 # Scene Classification
 
-This repository is to do scene classification by fine-tuning ResNet-152 with Cars Dataset from Stanford.
+This repository is to do scene classification by fine-tuning ResNet-152 with AI Challenger 2017 Scene Classification Dataset.
 
 
 ## Dependencies
@@ -12,18 +12,12 @@ This repository is to do scene classification by fine-tuning ResNet-152 with Car
 
 ## Dataset
 
-We use the Cars Dataset, which contains 16,185 images of 196 classes of cars. The data is split into 8,144 training images and 8,041 testing images, where each class has been split roughly in a 50-50 split.
+We use the Scene Classification Dataset from AI Challenger 2017, which contains 60,999 images of 80 classes of scenes. The data is split into 53,879 training images and 7,120 testing images.
 
- ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/random.jpg)
+ ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/dataset.png)
 
-You can get it from [Cars Dataset](https://ai.stanford.edu/~jkrause/cars/car_dataset.html):
+You can get it from [Scene Classification Dataset](https://challenger.ai/datasets/scene):
 
-```bash
-$ cd Scene-Classification
-$ wget http://imagenet.stanford.edu/internal/car196/cars_train.tgz
-$ wget http://imagenet.stanford.edu/internal/car196/cars_test.tgz
-$ wget --no-check-certificate https://ai.stanford.edu/~jkrause/cars/car_devkit.tgz
-```
 
 ## ImageNet Pretrained Models
 
@@ -32,7 +26,7 @@ Download [ResNet-152](https://drive.google.com/file/d/0Byy2AcGyEVxfeXExMzNNOHpEO
 ## Usage
 
 ### Data Pre-processing
-Extract 8,144 training images, and split them by 80:20 rule (6,515 for training, 1,629 for validation):
+Extract 60,999 training images, and split them (53,879 for training, 7,120 for validation):
 ```bash
 $ python pre-process.py
 ```
@@ -46,33 +40,6 @@ If you want to visualize during training, run in your terminal:
 ```bash
 $ tensorboard --logdir path_to_current_dir/logs
 ```
-
- ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/train.jpg)
-
-### Analysis
-Update "model_weights_path" in "utils.py" with your best model, and use 1,629 validation images for result analysis:
-```bash
-$ python analyze.py
-```
-
-#### Validation acc:
-**88.70%**
-
-#### Confusion matrix:
-
- ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/confusion_matrix.jpg)
-
-### Test
-```bash
-$ python test.py
-```
-
-Submit predictions of test data set (8,041 testing images) at [Cars Dataset](https://ai.stanford.edu/~jkrause/cars/car_dataset.html), evaluation result:
-
-#### Test acc:
-**88.88%**
-
- ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/test.jpg)
 
 ### Demo
 Download [pre-trained model](https://github.com/foamliu/Scene-Classification/releases/download/v1.0/model.96-0.89.hdf5) into "models" folder then run:
