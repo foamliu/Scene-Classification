@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     scene_classes_dict = dict()
     for item in scene_classes_list:
-        scene_classes_dict[item[0]] = item[2]
+        scene_classes_dict[int(item[0])] = item[2]
 
     test_path = 'data/ai_challenger_scene_test_a_20180103/scene_test_a_images_20180103/'
     test_images = [f for f in os.listdir(test_path) if
