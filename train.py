@@ -10,7 +10,7 @@ from keras.utils import multi_gpu_model
 
 from config import img_height, img_width, batch_size, patience, num_channels, num_classes, train_data, valid_data, \
     num_train_samples, num_valid_samples, num_epochs, verbose
-from resnet_50 import resnet50_model
+from densenet121 import densenet121_model
 from utils import get_available_gpus, get_available_cpus
 
 if __name__ == '__main__':
@@ -21,14 +21,13 @@ if __name__ == '__main__':
     pretrained_path = args["pretrained"]
 
     # prepare data augmentation configuration
-    train_data_gen = ImageDataGenerator(rescale=1. / 255,
-                                        shear_range=0.2,
+    train_data_gen = ImageDataGenerator(shear_range=0.2,
                                         rotation_range=20.,
-                                        width_shift_range=0.1,
-                                        height_shift_range=0.1,
+                                        width_shift_range=0.3,
+                                        height_shift_range=0.3,
                                         zoom_range=0.2,
                                         horizontal_flip=True)
-    valid_data_gen = ImageDataGenerator(rescale=1. / 255)
+    valid_data_gen = ImageDataGenerator()
 
     # generators
     train_generator = train_data_gen.flow_from_directory(train_data, (img_width, img_height), batch_size=batch_size,
@@ -58,8 +57,8 @@ if __name__ == '__main__':
     num_gpu = len(get_available_gpus())
     if num_gpu >= 2:
         with tf.device("/cpu:0"):
-            model = resnet50_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
-                                   num_classes=num_classes)
+            model = densenet121_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
+                                      num_classes=num_classes)
             if pretrained_path is not None:
                 model.load_weights(pretrained_path)
 
@@ -67,8 +66,8 @@ if __name__ == '__main__':
         # rewrite the callback: saving through the original model and not the multi-gpu model.
         model_checkpoint = MyCbk(model)
     else:
-        new_model = resnet50_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
-                                   num_classes=num_classes)
+        new_model = densenet121_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
+                                      num_classes=num_classes)
         if pretrained_path is not None:
             new_model.load_weights(pretrained_path)
 

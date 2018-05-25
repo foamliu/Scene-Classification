@@ -171,6 +171,7 @@ def resnet152_model(img_rows, img_cols, color_type=1, num_classes=None):
 
     return model
 
+
 if __name__ == '__main__':
 
     # Example to fine-tune on 3000 samples from Cifar10
