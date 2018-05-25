@@ -1,4 +1,4 @@
-img_width, img_height = 640, 640
+img_width, img_height = 224, 224
 num_channels = 3
 train_data = 'data/train'
 valid_data = 'data/valid'

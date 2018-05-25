@@ -1,4 +1,5 @@
 import argparse
+
 import keras
 import tensorflow as tf
 from keras.callbacks import ModelCheckpoint, EarlyStopping
@@ -9,8 +10,7 @@ from keras.utils import multi_gpu_model
 
 from config import img_height, img_width, batch_size, patience, num_channels, num_classes, train_data, valid_data, \
     num_train_samples, num_valid_samples, num_epochs, verbose
-from migrate import migrate_model
-from resnet_50 import resnet50_model_new
+from resnet_50 import resnet50_model
 from utils import get_available_gpus, get_available_cpus
 
 if __name__ == '__main__':
@@ -58,27 +58,19 @@ if __name__ == '__main__':
     num_gpu = len(get_available_gpus())
     if num_gpu >= 2:
         with tf.device("/cpu:0"):
+            model = resnet50_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
+                                   num_classes=num_classes)
             if pretrained_path is not None:
-                model = resnet50_model_new(img_rows=img_height, img_cols=img_width, color_type=num_channels,
-                                           num_classes=num_classes)
                 model.load_weights(pretrained_path)
-            else:
-                model = resnet50_model_new(img_rows=img_height, img_cols=img_width, color_type=num_channels,
-                                           num_classes=num_classes)
-                migrate_model(model)
 
         new_model = multi_gpu_model(model, gpus=num_gpu)
         # rewrite the callback: saving through the original model and not the multi-gpu model.
         model_checkpoint = MyCbk(model)
     else:
+        new_model = resnet50_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
+                                   num_classes=num_classes)
         if pretrained_path is not None:
-            new_model = resnet50_model_new(img_rows=img_height, img_cols=img_width, color_type=num_channels,
-                                       num_classes=num_classes)
             new_model.load_weights(pretrained_path)
-        else:
-            new_model = resnet50_model_new(img_rows=img_height, img_cols=img_width, color_type=num_channels,
-                                       num_classes=num_classes)
-            migrate_model(new_model)
 
     sgd = SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
     new_model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])

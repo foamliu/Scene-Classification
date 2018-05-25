@@ -11,7 +11,7 @@ from resnet_50 import resnet50_model_new
 from utils import draw_str
 
 if __name__ == '__main__':
-    img_width, img_height = 640, 640
+    img_width, img_height = 224, 224
     num_channels = 3
     num_classes = 80
 
