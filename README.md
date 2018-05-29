@@ -42,7 +42,7 @@ $ tensorboard --logdir path_to_current_dir/logs
 ```
 
 ### Demo
-Download [pre-trained model](https://github.com/foamliu/Scene-Classification/releases/download/v1.0/model.96-0.89.hdf5) into "models" folder then run:
+Download [pre-trained model](https://github.com/foamliu/Scene-Classification/releases/download/v1.0/model.85-0.7657.hdf5) into "models" folder then run:
 
 ```bash
 $ python demo.py
