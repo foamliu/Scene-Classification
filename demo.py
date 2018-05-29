@@ -7,7 +7,7 @@ import cv2 as cv
 import keras.backend as K
 import numpy as np
 
-from resnet_50 import resnet50_model_new
+from resnet_50 import resnet50_model
 from utils import draw_str
 
 if __name__ == '__main__':
@@ -15,9 +15,9 @@ if __name__ == '__main__':
     num_channels = 3
     num_classes = 80
 
-    model = resnet50_model_new(img_rows=img_height, img_cols=img_width, color_type=num_channels,
-                               num_classes=num_classes)
-    model.load_weights('models/model.07-0.7091.hdf5')
+    model = resnet50_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
+                           num_classes=num_classes)
+    model.load_weights('models/model.85-0.7657.hdf5')
 
     with open('scene_classes.csv') as file:
         reader = csv.reader(file)
