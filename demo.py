@@ -27,7 +27,7 @@ if __name__ == '__main__':
     for item in scene_classes_list:
         scene_classes_dict[int(item[0])] = item[2]
 
-    test_path = 'data/ai_challenger_scene_test_a_20180103/scene_test_a_images_20180103/'
+    test_path = 'data/test_a/'
     test_images = [f for f in os.listdir(test_path) if
                    os.path.isfile(os.path.join(test_path, f)) and f.endswith('.jpg')]
     num_samples = 20
@@ -41,7 +41,7 @@ if __name__ == '__main__':
         filename = os.path.join(test_path, image_name)
         print('Start processing image: {}'.format(filename))
         image = cv.imread(filename)
-        image = cv.resize(image, (224, 224), cv.INTER_CUBIC)
+        # image = cv.resize(image, (224, 224), cv.INTER_CUBIC)
         rgb_img = cv.cvtColor(image, cv.COLOR_BGR2RGB) / 255.
         rgb_img = np.expand_dims(rgb_img, 0)
         preds = model.predict(rgb_img)
@@ -49,7 +49,7 @@ if __name__ == '__main__':
         class_id = np.argmax(preds)
         print(scene_classes_dict[class_id])
         text = ('Predict: {}, prob: {}'.format(scene_classes_dict[class_id], prob))
-        draw_str(image, (20, 20), text)
+        draw_str(image, (5, 15), text)
         cv.imwrite('images/{}_out.png'.format(i), image)
 
     K.clear_session()
