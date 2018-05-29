@@ -41,7 +41,6 @@ if __name__ == '__main__':
         filename = os.path.join(test_path, image_name)
         print('Start processing image: {}'.format(filename))
         image = cv.imread(filename)
-        image = cv.resize(image, (640, 640), cv.INTER_CUBIC)
         rgb_img = cv.cvtColor(image, cv.COLOR_BGR2RGB) / 255.
         rgb_img = np.expand_dims(rgb_img, 0)
         preds = model.predict(rgb_img)
