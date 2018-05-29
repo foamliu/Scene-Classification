@@ -49,7 +49,7 @@ if __name__ == '__main__':
         class_id = np.argmax(preds)
         print(scene_classes_dict[class_id])
         text = ('Predict: {}, prob: {}'.format(scene_classes_dict[class_id], prob))
-        draw_str(image, (40, 40), text)
+        draw_str(image, (20, 20), text)
         cv.imwrite('images/{}_out.png'.format(i), image)
 
     K.clear_session()
