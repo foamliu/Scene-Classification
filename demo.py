@@ -48,7 +48,7 @@ if __name__ == '__main__':
         prob = np.max(preds)
         class_id = np.argmax(preds)
         print(scene_classes_dict[class_id])
-        text = ('Predict: {}, prob: {}'.format(scene_classes_dict[class_id], prob))
+        text = ('{}, prob: {:.4}'.format(scene_classes_dict[class_id], prob))
         draw_str(image, (5, 15), text)
         cv.imwrite('images/{}_out.png'.format(i), image)
 
