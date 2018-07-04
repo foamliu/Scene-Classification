@@ -7,14 +7,11 @@ import cv2 as cv
 import keras.backend as K
 import numpy as np
 
+from config import img_width, img_height, num_channels, num_classes
 from densenet121 import densenet121_model
 from utils import draw_str
 
 if __name__ == '__main__':
-    img_width, img_height = 224, 224
-    num_channels = 3
-    num_classes = 80
-
     model = densenet121_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
                               num_classes=num_classes)
     model.load_weights('models/model.85-0.7657.hdf5')
