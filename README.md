@@ -60,7 +60,7 @@ $ python demo.py
 ### Analysis
 
 ```bash
-$ python demo.py
+$ python analyze.py
 ```
 
 Test_A | Test_B |
