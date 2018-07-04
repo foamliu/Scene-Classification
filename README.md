@@ -1,37 +1,37 @@
-# Scene Classification
+# 场景分类
 
-This repository is to do scene classification by fine-tuning ResNet-152 with AI Challenger 2017 Scene Classification Dataset.
+微调 DenseNet-121, 解决 AI Challenger 2017 场景分类问题。 
 
 
-## Dependencies
+## 依赖
 
 - [NumPy](http://docs.scipy.org/doc/numpy-1.10.1/user/install.html)
 - [Tensorflow](https://www.tensorflow.org/versions/r0.8/get_started/os_setup.html)
 - [Keras](https://keras.io/#installation)
 - [OpenCV](https://opencv-python-tutroals.readthedocs.io/en/latest/)
 
-## Dataset
+## 数据集
 
-We use the Scene Classification Dataset from AI Challenger 2017, which contains 60,999 images of 80 classes of scenes. The data is split into 53,879 training images and 7,120 testing images.
+我们使用AI Challenger 2017中的场景分类数据集，其中包含80,900种场景的60,999张图像。 数据分为53,879个训练图像和7,120个测试图像。
 
  ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/dataset.png)
 
-You can get it from [Scene Classification Dataset](https://challenger.ai/datasets/scene):
+你可以从中得到它 [Scene Classification Dataset](https://challenger.ai/datasets/scene):
 
 
-## ImageNet Pretrained Models
+## ImageNet 预训练模型
 
-Download [ResNet-152](https://drive.google.com/file/d/0Byy2AcGyEVxfeXExMzNNOHpEODg/view?usp=sharing) into models folder.
+下载 [ResNet-152](https://drive.google.com/file/d/0Byy2AcGyEVxfeXExMzNNOHpEODg/view?usp=sharing) 放在 models 目录。
 
-## Usage
+## 用法
 
-### Data Pre-processing
+### 数据预处理
 Extract 60,999 training images, and split them (53,879 for training, 7,120 for validation):
 ```bash
 $ python pre-process.py
 ```
 
-### Train
+### 训练
 ```bash
 $ python train.py
 ```
@@ -42,7 +42,7 @@ $ tensorboard --logdir path_to_current_dir/logs
 ```
 
 ### Demo
-Download [pre-trained model](https://github.com/foamliu/Scene-Classification/releases/download/v1.0/model.85-0.7657.hdf5) into "models" folder then run:
+下载 [pre-trained model](https://github.com/foamliu/Scene-Classification/releases/download/v1.0/model.85-0.7657.hdf5) 放在 models 目录然后执行:
 
 ```bash
 $ python demo.py
@@ -57,12 +57,12 @@ $ python demo.py
 |![image](https://github.com/foamliu/Scene-Classification/raw/master/images/16_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/17_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/18_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/19_out.png) |
 
 
-### Analysis
+### 结果分析
 
 ```bash
 $ python analyze.py
 ```
 
-Test_A | Test_B |
-|---|---|
-|0.9051136363636364|0|
+| |Test A|Test B|
+|---|---|---|
+|Top3准确度|0.9051136363636364|0|
