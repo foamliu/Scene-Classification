@@ -1,7 +1,7 @@
 import argparse
 import json
 import os
-
+import keras.backend as K
 import cv2 as cv
 import numpy as np
 from console_progressbar import ProgressBar
@@ -27,6 +27,8 @@ if __name__ == '__main__':
         data = json.load(f)
 
     num_samples = len(data)
+    print('num_samples: ' + str(num_samples))
+
     pb = ProgressBar(total=num_samples, prefix='Processing images', suffix='', decimals=3, length=50, fill='=')
     num_correct = 0
     for i in range(num_samples):
@@ -44,3 +46,4 @@ if __name__ == '__main__':
         pb.print_progress_bar(i + 1)
 
     print(num_correct / num_samples)
+    K.clear_session()

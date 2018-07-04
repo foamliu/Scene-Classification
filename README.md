@@ -26,7 +26,7 @@
 ## 用法
 
 ### 数据预处理
-Extract 60,999 training images, and split them (53,879 for training, 7,120 for validation):
+提取60,999个训练图像，并将它们分开（53,879个用于训练，7,120个用于验证）：
 ```bash
 $ python pre-process.py
 ```
@@ -36,7 +36,7 @@ $ python pre-process.py
 $ python train.py
 ```
 
-If you want to visualize during training, run in your terminal:
+如果想在培训期间进行可视化，请在终端中运行：
 ```bash
 $ tensorboard --logdir path_to_current_dir/logs
 ```
@@ -65,4 +65,5 @@ $ python analyze.py
 
 | |Test A|Test B|
 |---|---|---|
-|Top3准确度|0.9051136363636364|0|
+|图片数|7040|7078|
+|Top3准确度|0.90511|0.86337|
