@@ -9,7 +9,8 @@ from keras.layers.core import Dense, Dropout
 from keras.models import Model
 from keras.preprocessing.image import ImageDataGenerator
 
-from config import img_width, img_height, num_classes, batch_size, train_data, valid_data
+from config import img_width, img_height, num_classes, batch_size, train_data, valid_data, num_train_samples, \
+    num_valid_samples
 
 
 def data():
@@ -30,7 +31,7 @@ def data():
     return train_generator, validation_generator
 
 
-def create_model(x_train, y_train, x_test, y_test):
+def create_model(train_generator, validation_generator):
     base_model = InceptionResNetV2(weights='imagenet', include_top=False)
     x = base_model.output
     x = GlobalAveragePooling2D()(x)
@@ -47,12 +48,13 @@ def create_model(x_train, y_train, x_test, y_test):
     model.compile(loss='categorical_crossentropy', metrics=['accuracy'],
                   optimizer={{choice(['rmsprop', 'adam', 'sgd', 'nadam'])}})
 
-    model.fit(x_train, y_train,
-              batch_size={{choice([32, 64, 128])}},
-              epochs=1,
-              verbose=2,
-              validation_data=(x_test, y_test))
-    score, acc = model.evaluate(x_test, y_test, verbose=0)
+    model.fit_generator(
+        train_generator,
+        steps_per_epoch=num_train_samples / batch_size,
+        validation_data=validation_generator,
+        validation_steps=num_valid_samples / batch_size)
+
+    score, acc = model.evaluate(validation_generator, verbose=0)
     print('Test accuracy:', acc)
     return {'loss': -acc, 'status': STATUS_OK, 'model': model}
 
