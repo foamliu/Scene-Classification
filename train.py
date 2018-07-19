@@ -2,15 +2,15 @@ import argparse
 
 import keras
 import tensorflow as tf
+from keras.applications.inception_resnet_v2 import InceptionResNetV2, preprocess_input
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.callbacks import ReduceLROnPlateau
 from keras.optimizers import SGD
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import multi_gpu_model
 
-from config import img_height, img_width, batch_size, patience, num_channels, num_classes, train_data, valid_data, \
+from config import img_height, img_width, batch_size, patience, num_classes, train_data, valid_data, \
     num_train_samples, num_valid_samples, num_epochs, verbose
-from densenet121 import densenet121_model
 from utils import get_available_gpus, get_available_cpus
 
 if __name__ == '__main__':
@@ -26,8 +26,9 @@ if __name__ == '__main__':
                                         width_shift_range=0.3,
                                         height_shift_range=0.3,
                                         zoom_range=0.2,
-                                        horizontal_flip=True)
-    valid_data_gen = ImageDataGenerator()
+                                        horizontal_flip=True,
+                                        preprocessing_function=preprocess_input)
+    valid_data_gen = ImageDataGenerator(preprocessing_function=preprocess_input)
 
     # generators
     train_generator = train_data_gen.flow_from_directory(train_data, (img_width, img_height), batch_size=batch_size,
@@ -43,22 +44,21 @@ if __name__ == '__main__':
 
         def on_epoch_end(self, epoch, logs=None):
             fmt = 'models/model.%02d-%.4f.hdf5'
-            self.model_to_save.save(fmt % (epoch, logs['val_acc']))
+            self.model_to_save.save(fmt % (epoch, logs['val_loss']))
 
 
     # Callbacks
     tensor_board = keras.callbacks.TensorBoard(log_dir='./logs', histogram_freq=0, write_graph=True, write_images=True)
-    early_stop = EarlyStopping('val_acc', patience=patience)
-    reduce_lr = ReduceLROnPlateau('val_acc', factor=0.1, patience=int(patience / 4), verbose=1)
+    early_stop = EarlyStopping('val_loss', patience=patience)
+    reduce_lr = ReduceLROnPlateau('val_loss', factor=0.5, patience=int(patience / 4), verbose=1)
     trained_models_path = 'models/model'
-    model_names = trained_models_path + '.{epoch:02d}-{val_acc:.4f}.hdf5'
-    model_checkpoint = ModelCheckpoint(model_names, monitor='val_acc', verbose=1, save_best_only=True)
+    model_names = trained_models_path + '.{epoch:02d}-{val_loss:.4f}.hdf5'
+    model_checkpoint = ModelCheckpoint(model_names, monitor='val_loss', verbose=1, save_best_only=True)
 
     num_gpu = len(get_available_gpus())
     if num_gpu >= 2:
         with tf.device("/cpu:0"):
-            model = densenet121_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
-                                      num_classes=num_classes)
+            model = InceptionResNetV2(weights='imagenet', classes=num_classes)
             if pretrained_path is not None:
                 model.load_weights(pretrained_path)
 
@@ -66,12 +66,11 @@ if __name__ == '__main__':
         # rewrite the callback: saving through the original model and not the multi-gpu model.
         model_checkpoint = MyCbk(model)
     else:
-        new_model = densenet121_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
-                                      num_classes=num_classes)
+        new_model = InceptionResNetV2(weights='imagenet', classes=num_classes)
         if pretrained_path is not None:
             new_model.load_weights(pretrained_path)
 
-    sgd = SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
+    sgd = SGD(lr=1e-4, momentum=0.9, nesterov=True)
     new_model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
 
     callbacks = [tensor_board, model_checkpoint, early_stop, reduce_lr]
