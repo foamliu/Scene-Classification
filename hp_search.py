@@ -3,7 +3,7 @@ from __future__ import print_function
 from hyperas import optim
 from hyperas.distributions import choice, uniform
 from hyperopt import Trials, STATUS_OK, tpe
-from keras.applications.inception_resnet_v2 import InceptionResNetV2
+from keras.applications.inception_resnet_v2 import InceptionResNetV2, preprocess_input
 from keras.layers import GlobalAveragePooling2D
 from keras.layers.core import Dense, Dropout
 from keras.models import Model
@@ -16,13 +16,14 @@ def data():
     train_data_dir = 'column_data/train'
     validation_data_dir = 'column_data/validation'
 
-    test_datagen = ImageDataGenerator(
-        rescale=None)
-
-    train_datagen = ImageDataGenerator(
-        rescale=None,
-        shear_range=0.2,
-        horizontal_flip=False)
+    train_datagen = ImageDataGenerator(shear_range=0.2,
+                                       rotation_range=20.,
+                                       width_shift_range=0.3,
+                                       height_shift_range=0.3,
+                                       zoom_range=0.2,
+                                       horizontal_flip=True,
+                                       preprocessing_function=preprocess_input)
+    test_datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
 
     train_generator = train_datagen.flow_from_directory(
         train_data_dir,
