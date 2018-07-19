@@ -31,7 +31,7 @@ def data():
     return train_generator, validation_generator
 
 
-def create_model():
+def create_model(train_generator, validation_generator):
     base_model = InceptionResNetV2(weights='imagenet', include_top=False)
     x = base_model.output
     x = GlobalAveragePooling2D()(x)
@@ -48,18 +48,7 @@ def create_model():
     model.compile(loss='categorical_crossentropy', metrics=['accuracy'],
                   optimizer={{choice(['rmsprop', 'adam', 'sgd', 'nadam'])}})
 
-    train_datagen = ImageDataGenerator(shear_range=0.2,
-                                       rotation_range=20.,
-                                       width_shift_range=0.3,
-                                       height_shift_range=0.3,
-                                       zoom_range=0.2,
-                                       horizontal_flip=True,
-                                       preprocessing_function=preprocess_input)
-
-    train_generator = train_datagen.flow_from_directory(train_data, (img_width, img_height), batch_size=batch_size,
-                                                        class_mode='categorical', shuffle=True)
-    validation_generator = test_datagen.flow_from_directory(valid_data, (img_width, img_height), batch_size=batch_size,
-                                                            class_mode='categorical', shuffle=True)
+    print(model.summary())
 
     model.fit_generator(
         train_generator,
@@ -73,6 +62,7 @@ def create_model():
 
 
 if __name__ == '__main__':
+    train_generator, validation_generator = data()
     best_run, best_model = optim.minimize(model=create_model,
                                           data=data,
                                           algo=tpe.suggest,
@@ -80,9 +70,6 @@ if __name__ == '__main__':
                                           trials=Trials())
 
     print("Evalutation of best performing model:")
-    test_datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
-    validation_generator = test_datagen.flow_from_directory(valid_data, (img_width, img_height), batch_size=batch_size,
-                                                            class_mode='categorical', shuffle=True)
     print(best_model.evaluate_generator(validation_generator))
     print("Best performing model chosen hyper-parameters:")
     print(best_run)
