@@ -40,6 +40,10 @@ def create_model(x_train, y_train, x_test, y_test):
     predictions = Dense(num_classes, activation='softmax')(x)
     model = Model(inputs=base_model.input, outputs=predictions)
 
+    if {{choice(['three', 'four'])}} == 'four':
+        for layer in base_model.layers:
+            layer.trainable = False
+
     model.compile(loss='categorical_crossentropy', metrics=['accuracy'],
                   optimizer={{choice(['rmsprop', 'adam', 'sgd', 'nadam'])}})
 
