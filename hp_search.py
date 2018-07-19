@@ -12,26 +12,26 @@ from keras.preprocessing.image import ImageDataGenerator
 from config import img_width, img_height, num_classes, batch_size, train_data, valid_data, num_train_samples, \
     num_valid_samples
 
+train_datagen = ImageDataGenerator(shear_range=0.2,
+                                   rotation_range=20.,
+                                   width_shift_range=0.3,
+                                   height_shift_range=0.3,
+                                   zoom_range=0.2,
+                                   horizontal_flip=True,
+                                   preprocessing_function=preprocess_input)
+test_datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
+
+train_generator = train_datagen.flow_from_directory(train_data, (img_width, img_height), batch_size=batch_size,
+                                                    class_mode='categorical', shuffle=True)
+validation_generator = test_datagen.flow_from_directory(valid_data, (img_width, img_height), batch_size=batch_size,
+                                                        class_mode='categorical', shuffle=True)
+
 
 def data():
-    train_datagen = ImageDataGenerator(shear_range=0.2,
-                                       rotation_range=20.,
-                                       width_shift_range=0.3,
-                                       height_shift_range=0.3,
-                                       zoom_range=0.2,
-                                       horizontal_flip=True,
-                                       preprocessing_function=preprocess_input)
-    test_datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
-
-    train_generator = train_datagen.flow_from_directory(train_data, (img_width, img_height), batch_size=batch_size,
-                                                        class_mode='categorical', shuffle=True)
-    validation_generator = test_datagen.flow_from_directory(valid_data, (img_width, img_height), batch_size=batch_size,
-                                                            class_mode='categorical', shuffle=True)
-
     return train_generator, validation_generator
 
 
-def create_model(train_generator, validation_generator):
+def create_model():
     base_model = InceptionResNetV2(weights='imagenet', include_top=False)
     x = base_model.output
     x = GlobalAveragePooling2D()(x)
