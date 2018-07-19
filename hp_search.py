@@ -9,13 +9,10 @@ from keras.layers.core import Dense, Dropout
 from keras.models import Model
 from keras.preprocessing.image import ImageDataGenerator
 
-from config import img_width, img_height, num_classes, batch_size
+from config import img_width, img_height, num_classes, batch_size, train_data, valid_data
 
 
 def data():
-    train_data_dir = 'column_data/train'
-    validation_data_dir = 'column_data/validation'
-
     train_datagen = ImageDataGenerator(shear_range=0.2,
                                        rotation_range=20.,
                                        width_shift_range=0.3,
@@ -25,17 +22,10 @@ def data():
                                        preprocessing_function=preprocess_input)
     test_datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
 
-    train_generator = train_datagen.flow_from_directory(
-        train_data_dir,
-        target_size=(img_width, img_height),
-        batch_size=batch_size,
-        class_mode='categorical')
-
-    validation_generator = test_datagen.flow_from_directory(
-        validation_data_dir,
-        target_size=(img_width, img_height),
-        batch_size=batch_size,
-        class_mode='categorical')
+    train_generator = train_datagen.flow_from_directory(train_data, (img_width, img_height), batch_size=batch_size,
+                                                        class_mode='categorical', shuffle=True)
+    validation_generator = test_datagen.flow_from_directory(valid_data, (img_width, img_height), batch_size=batch_size,
+                                                            class_mode='categorical', shuffle=True)
 
     return train_generator, validation_generator
 
@@ -67,7 +57,7 @@ if __name__ == '__main__':
     best_run, best_model = optim.minimize(model=create_model,
                                           data=data,
                                           algo=tpe.suggest,
-                                          max_evals=5,
+                                          max_evals=10,
                                           trials=Trials())
     X_train, Y_train, X_test, Y_test = data()
     print("Evalutation of best performing model:")
