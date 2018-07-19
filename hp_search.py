@@ -67,7 +67,7 @@ def create_model():
         validation_data=validation_generator,
         validation_steps=num_valid_samples / batch_size)
 
-    score, acc = model.evaluate(validation_generator, verbose=0)
+    score, acc = model.evaluate_generator(validation_generator, verbose=0)
     print('Test accuracy:', acc)
     return {'loss': -acc, 'status': STATUS_OK, 'model': model}
 
@@ -83,6 +83,6 @@ if __name__ == '__main__':
     test_datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
     validation_generator = test_datagen.flow_from_directory(valid_data, (img_width, img_height), batch_size=batch_size,
                                                             class_mode='categorical', shuffle=True)
-    print(best_model.evaluate(validation_generator))
+    print(best_model.evaluate_generator(validation_generator))
     print("Best performing model chosen hyper-parameters:")
     print(best_run)
