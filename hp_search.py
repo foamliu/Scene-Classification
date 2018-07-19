@@ -67,7 +67,7 @@ def create_model():
         validation_data=validation_generator,
         validation_steps=num_valid_samples / batch_size)
 
-    score, acc = model.evaluate_generator(validation_generator, verbose=0)
+    score, acc = model.evaluate_generator(validation_generator)
     print('Test accuracy:', acc)
     return {'loss': -acc, 'status': STATUS_OK, 'model': model}
 
