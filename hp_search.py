@@ -60,7 +60,6 @@ def create_model():
 
 
 if __name__ == '__main__':
-    train_generator, validation_generator = data()
     best_run, best_model = optim.minimize(model=create_model,
                                           data=data,
                                           algo=tpe.suggest,
