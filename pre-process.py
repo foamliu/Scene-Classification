@@ -1,9 +1,11 @@
 import json
 import os
 import zipfile
-from config import img_height, img_width
+
 import cv2 as cv
-from console_progressbar import ProgressBar
+from tqdm import tqdm
+
+from config import img_height, img_width
 
 
 def ensure_folder(folder):
@@ -17,14 +19,13 @@ def extract(usage, package, image_path, json_path):
     with zipfile.ZipFile(filename, 'r') as zip_ref:
         zip_ref.extractall('data')
 
-    pb = ProgressBar(total=100, prefix='Save {} data'.format(usage), suffix='', decimals=3, length=50, fill='=')
     if not os.path.exists('data/{}'.format(usage)):
         os.makedirs('data/{}'.format(usage))
     with open('data/{}/{}'.format(package, json_path)) as json_data:
         data = json.load(json_data)
     num_samples = len(data)
     print("num_samples: " + str(num_samples))
-    for i in range(num_samples):
+    for i in tqdm(range(num_samples)):
         item = data[i]
         image_name = item['image_id']
         label_id = item['label_id']
@@ -39,7 +40,6 @@ def extract(usage, package, image_path, json_path):
         src_image = cv.imread(src_path)
         dst_image = cv.resize(src_image, (img_height, img_width), cv.INTER_CUBIC)
         cv.imwrite(dst_path, dst_image)
-        pb.print_progress_bar((i + 1) * 100 / num_samples)
 
 
 def extract_test(usage, package, image_path, json_path):
@@ -48,8 +48,6 @@ def extract_test(usage, package, image_path, json_path):
     with zipfile.ZipFile(filename, 'r') as zip_ref:
         zip_ref.extractall('data')
 
-    pb = ProgressBar(total=100, prefix='Save {} data'.format(usage), suffix='', decimals=3, length=50, fill='=')
-
     if not os.path.exists('data/{}'.format(usage)):
         os.makedirs('data/{}'.format(usage))
     with open('data/{}/{}'.format(package, json_path)) as json_data:
@@ -57,7 +55,7 @@ def extract_test(usage, package, image_path, json_path):
     num_samples = len(data)
     print("num_samples: " + str(num_samples))
     label_dict = dict()
-    for i in range(num_samples):
+    for i in tqdm(range(num_samples)):
         item = data[i]
         image_name = item['image_id']
         label_id = item['label_id']
@@ -70,7 +68,6 @@ def extract_test(usage, package, image_path, json_path):
         src_image = cv.imread(src_path)
         dst_image = cv.resize(src_image, (img_height, img_width), cv.INTER_CUBIC)
         cv.imwrite(dst_path, dst_image)
-        pb.print_progress_bar((i + 1) * 100 / num_samples)
     with open('label_dict.txt', 'w') as outfile:
         json.dump(label_dict, outfile, indent=4, sort_keys=True)
 
