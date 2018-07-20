@@ -39,7 +39,7 @@ if __name__ == '__main__':
         image = cv.imread(filename)
         image = cv.resize(image, (img_width, img_height), cv.INTER_CUBIC)
         rgb_img = cv.cvtColor(image, cv.COLOR_BGR2RGB)
-        rgb_img = np.expand_dims(rgb_img, 0)
+        rgb_img = np.expand_dims(rgb_img, 0).astype(np.float32)
         rgb_img = preprocess_input(rgb_img)
         preds = model.predict(rgb_img)
         top3 = np.argsort(preds)[0][::-1][:3]
