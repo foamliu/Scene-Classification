@@ -5,8 +5,8 @@ import os
 import cv2 as cv
 import keras.backend as K
 import numpy as np
-from console_progressbar import ProgressBar
 from keras.applications.inception_resnet_v2 import preprocess_input
+from tqdm import tqdm
 
 from config import img_width, img_height
 from model import build_model
@@ -30,9 +30,8 @@ if __name__ == '__main__':
     num_samples = len(data)
     print('num_samples: ' + str(num_samples))
 
-    pb = ProgressBar(total=num_samples, prefix='Processing images', suffix='', decimals=3, length=50, fill='=')
     num_correct = 0
-    for i in range(num_samples):
+    for i in tqdm(range(num_samples)):
         image_id = data[i]['image_id']
         label_id = int(data[i]['label_id'])
         filename = os.path.join(image_folder, image_id)
@@ -45,7 +44,6 @@ if __name__ == '__main__':
         top3 = np.argsort(preds)[0][::-1][:3]
         if label_id in top3:
             num_correct += 1
-        pb.print_progress_bar(i + 1)
 
     print(num_correct / num_samples)
     K.clear_session()
