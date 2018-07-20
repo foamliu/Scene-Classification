@@ -1,6 +1,6 @@
 # 场景分类
 
-微调 DenseNet-121, 解决 AI Challenger 2017 场景分类问题。 
+微调 Inception-ResNet-V2, 解决 AI Challenger 2017 场景分类问题。 
 
 
 ## 依赖
@@ -17,11 +17,6 @@
  ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/dataset.png)
 
 你可以从中得到它 [Scene Classification Dataset](https://challenger.ai/datasets/scene):
-
-
-## ImageNet 预训练模型
-
-下载 [ResNet-152](https://drive.google.com/file/d/0Byy2AcGyEVxfeXExMzNNOHpEODg/view?usp=sharing) 放在 models 目录。
 
 ## 用法
 
