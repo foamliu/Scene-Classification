@@ -6,6 +6,7 @@ import random
 import cv2 as cv
 import keras.backend as K
 import numpy as np
+from keras.applications.inception_resnet_v2 import preprocess_input
 
 from model import build_model
 from utils import draw_str
@@ -36,9 +37,9 @@ if __name__ == '__main__':
         filename = os.path.join(test_path, image_name)
         print('Start processing image: {}'.format(filename))
         image = cv.imread(filename)
-        # image = cv.resize(image, (224, 224), cv.INTER_CUBIC)
         rgb_img = cv.cvtColor(image, cv.COLOR_BGR2RGB)
         rgb_img = np.expand_dims(rgb_img, 0)
+        rgb_img = preprocess_input(rgb_img)
         preds = model.predict(rgb_img)
         prob = np.max(preds)
         class_id = np.argmax(preds)

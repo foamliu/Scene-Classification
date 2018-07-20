@@ -6,6 +6,7 @@ import cv2 as cv
 import keras.backend as K
 import numpy as np
 from console_progressbar import ProgressBar
+from keras.applications.inception_resnet_v2 import preprocess_input
 
 from config import img_width, img_height
 from model import build_model
@@ -39,6 +40,7 @@ if __name__ == '__main__':
         image = cv.resize(image, (img_width, img_height), cv.INTER_CUBIC)
         rgb_img = cv.cvtColor(image, cv.COLOR_BGR2RGB)
         rgb_img = np.expand_dims(rgb_img, 0)
+        rgb_img = preprocess_input(rgb_img)
         preds = model.predict(rgb_img)
         top3 = np.argsort(preds)[0][::-1][:3]
         if label_id in top3:
