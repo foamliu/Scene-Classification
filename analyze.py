@@ -1,13 +1,14 @@
 import argparse
 import json
 import os
-import keras.backend as K
+
 import cv2 as cv
+import keras.backend as K
 import numpy as np
 from console_progressbar import ProgressBar
 
-from config import img_width, img_height, num_channels, num_classes
-from densenet121 import densenet121_model
+from config import img_width, img_height
+from model import build_model
 
 if __name__ == '__main__':
     # Parse arguments
@@ -16,8 +17,7 @@ if __name__ == '__main__':
     args = vars(ap.parse_args())
     test_suite = args["testsuite"]
 
-    model = densenet121_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
-                              num_classes=num_classes)
+    model = build_model()
     model.load_weights('models/model.11-0.6262.hdf5')
 
     test_a = 'data/ai_challenger_scene_{}_20180103'.format(test_suite)
