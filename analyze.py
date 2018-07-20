@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     model = densenet121_model(img_rows=img_height, img_cols=img_width, color_type=num_channels,
                               num_classes=num_classes)
-    model.load_weights('models/model.85-0.7657.hdf5')
+    model.load_weights('models/model.11-0.6262.hdf5')
 
     test_a = 'data/ai_challenger_scene_{}_20180103'.format(test_suite)
     image_folder = 'data/ai_challenger_scene_{0}_20180103/scene_{0}_images_20180103'.format(test_suite)
