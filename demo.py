@@ -38,7 +38,7 @@ if __name__ == '__main__':
         print('Start processing image: {}'.format(filename))
         image = cv.imread(filename)
         rgb_img = cv.cvtColor(image, cv.COLOR_BGR2RGB)
-        rgb_img = np.expand_dims(rgb_img, 0)
+        rgb_img = np.expand_dims(rgb_img, 0).astype(np.float32)
         rgb_img = preprocess_input(rgb_img)
         preds = model.predict(rgb_img)
         prob = np.max(preds)
