@@ -37,7 +37,7 @@ $ tensorboard --logdir path_to_current_dir/logs
 ```
 
 ### Demo
-下载 [pre-trained model](https://github.com/foamliu/Scene-Classification/releases/download/v1.0/model.85-0.7657.hdf5) 放在 models 目录然后执行:
+下载 [pre-trained model](https://github.com/foamliu/Scene-Classification/releases/download/v1.0/model.11-0.6262.hdf5) 放在 models 目录然后执行:
 
 ```bash
 $ python demo.py
