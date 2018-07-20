@@ -36,7 +36,7 @@ def create_model(train_generator, validation_generator):
     x = base_model.output
     x = GlobalAveragePooling2D()(x)
     x = Dropout({{uniform(0, 1)}})(x)
-    x = Dense({{choice([512, 1024, 2048])}}, activation='relu')(x)
+    x = Dense({{choice([512, 1024])}}, activation='relu')(x)
     x = Dropout({{uniform(0, 1)}})(x)
     predictions = Dense(num_classes, activation='softmax')(x)
     model = Model(inputs=base_model.input, outputs=predictions)
