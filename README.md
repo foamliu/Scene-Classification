@@ -36,8 +36,6 @@ $ python train.py
 $ tensorboard --logdir path_to_current_dir/logs
 ```
 
- ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/learning_curve.png)
-
 ### Demo
 下载 [pre-trained model](https://github.com/foamliu/Scene-Classification/releases/download/v1.0/model.85-0.7657.hdf5) 放在 models 目录然后执行:
 
