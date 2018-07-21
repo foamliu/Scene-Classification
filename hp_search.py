@@ -4,8 +4,7 @@ from hyperas import optim
 from hyperas.distributions import choice, uniform
 from hyperopt import Trials, STATUS_OK, tpe
 from keras.applications.inception_resnet_v2 import InceptionResNetV2, preprocess_input
-from keras.layers import GlobalAveragePooling2D
-from keras.layers.core import Dense, Dropout
+from keras.layers.core import Dense, Dropout, Activation
 from keras.models import Model
 from keras.preprocessing.image import ImageDataGenerator
 
@@ -32,29 +31,29 @@ def data():
 
 
 def create_model(train_generator, validation_generator):
-    base_model = InceptionResNetV2(weights='imagenet', include_top=False)
+    base_model = InceptionResNetV2(weights='imagenet', pooling='avg', include_top=False)
     x = base_model.output
-    x = GlobalAveragePooling2D()(x)
     x = Dropout({{uniform(0, 1)}})(x)
-    x = Dense({{choice([512, 1024])}}, activation='relu')(x)
+    x = Dense({{choice([512, 1024, 1536])}})(x)
+    x = Activation({{choice(['relu', 'elu', 'prelu'])}})(x)
     x = Dropout({{uniform(0, 1)}})(x)
     predictions = Dense(num_classes, activation='softmax')(x)
     model = Model(inputs=base_model.input, outputs=predictions)
 
-    if {{choice(['three', 'four'])}} == 'four':
-        for layer in base_model.layers:
-            layer.trainable = False
+    for i in range(int(len(base_model.layers) * {{uniform(0, 1)}})):
+        layer = base_model.layers[i]
+        layer.trainable = False
 
     model.compile(loss='categorical_crossentropy', metrics=['accuracy'],
-                  optimizer={{choice(['rmsprop', 'adam', 'sgd', 'nadam'])}})
+                  optimizer={{choice(['rmsprop', 'adam'])}})
 
     print(model.summary())
 
     model.fit_generator(
         train_generator,
-        steps_per_epoch=num_train_samples / batch_size,
+        steps_per_epoch=num_train_samples // batch_size // 10,
         validation_data=validation_generator,
-        validation_steps=num_valid_samples / batch_size)
+        validation_steps=num_valid_samples // batch_size // 10)
 
     score, acc = model.evaluate_generator(validation_generator)
     print('Test accuracy:', acc)
@@ -66,7 +65,7 @@ if __name__ == '__main__':
     best_run, best_model = optim.minimize(model=create_model,
                                           data=data,
                                           algo=tpe.suggest,
-                                          max_evals=20,
+                                          max_evals=25,
                                           trials=Trials())
 
     print("Evalutation of best performing model:")
