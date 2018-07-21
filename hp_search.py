@@ -35,7 +35,7 @@ def create_model(train_generator, validation_generator):
     x = base_model.output
     x = Dropout({{uniform(0, 1)}})(x)
     x = Dense({{choice([512, 1024, 1536])}})(x)
-    x = Activation({{choice(['relu', 'elu', 'prelu'])}})(x)
+    x = Activation({{choice(['relu', 'elu', 'linear'])}})(x)
     x = Dropout({{uniform(0, 1)}})(x)
     predictions = Dense(num_classes, activation='softmax')(x)
     model = Model(inputs=base_model.input, outputs=predictions)
