@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import keras.backend as K
 from hyperas import optim
 from hyperas.distributions import choice, uniform
 from hyperopt import Trials, STATUS_OK, tpe
@@ -57,6 +58,7 @@ def create_model(train_generator, validation_generator):
 
     score, acc = model.evaluate_generator(validation_generator)
     print('Test accuracy:', acc)
+    K.clear_session()
     return {'loss': -acc, 'status': STATUS_OK, 'model': model}
 
 
