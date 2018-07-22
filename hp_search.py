@@ -48,7 +48,7 @@ def create_model(train_generator, validation_generator):
     model.compile(loss='categorical_crossentropy', metrics=['accuracy'],
                   optimizer={{choice(['rmsprop', 'adam'])}})
 
-    print(model.summary())
+    # print(model.summary())
 
     model.fit_generator(
         train_generator,
