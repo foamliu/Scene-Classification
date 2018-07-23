@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import keras.backend as K
+import tensorflow as tf
 from hyperas import optim
 from hyperas.distributions import choice, uniform
 from hyperopt import Trials, STATUS_OK, tpe
@@ -40,6 +41,7 @@ def create_model(train_generator, validation_generator):
     x = Dropout({{uniform(0, 1)}})(x)
     predictions = Dense(num_classes, activation='softmax')(x)
     model = Model(inputs=base_model.input, outputs=predictions)
+    graph = tf.get_default_graph()
 
     for i in range(int(len(base_model.layers) * {{uniform(0, 1)}})):
         layer = base_model.layers[i]
@@ -56,7 +58,9 @@ def create_model(train_generator, validation_generator):
         validation_data=validation_generator,
         validation_steps=num_valid_samples // batch_size // 10)
 
-    score, acc = model.evaluate_generator(validation_generator)
+    global graph
+    with graph.as_default():
+        score, acc = model.evaluate_generator(validation_generator)
     print('Test accuracy:', acc)
     K.clear_session()
     return {'loss': -acc, 'status': STATUS_OK, 'model': model}

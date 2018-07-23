@@ -71,8 +71,7 @@ if __name__ == '__main__':
         if pretrained_path is not None:
             new_model.load_weights(pretrained_path)
 
-    sgd = SGD(lr=1e-3, momentum=0.9, nesterov=True)
-    new_model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
+    new_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
     callbacks = [tensor_board, model_checkpoint, early_stop, reduce_lr]
 
