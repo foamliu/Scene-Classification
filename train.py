@@ -71,7 +71,8 @@ if __name__ == '__main__':
         if pretrained_path is not None:
             new_model.load_weights(pretrained_path)
 
-    new_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    adam = keras.optimizers.Adam(lr=1e-6)
+    new_model.compile(optimizer=adam, loss='categorical_crossentropy', metrics=['accuracy'])
 
     callbacks = [tensor_board, model_checkpoint, early_stop, reduce_lr]
 
