@@ -62,9 +62,9 @@ def create_model(train_generator, validation_generator):
 
     model.fit_generator(
         train_generator,
-        steps_per_epoch=num_train_samples // batch_size // 10,
+        steps_per_epoch=num_train_samples // batch_size,
         validation_data=validation_generator,
-        validation_steps=num_valid_samples // batch_size // 10)
+        validation_steps=num_valid_samples // batch_size)
 
     score, acc = model.evaluate_generator(validation_generator)
     print('Test accuracy:', acc)
