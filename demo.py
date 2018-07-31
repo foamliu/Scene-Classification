@@ -8,12 +8,14 @@ import keras.backend as K
 import numpy as np
 from keras.applications.inception_resnet_v2 import preprocess_input
 
+from config import best_model
 from model import build_model
 from utils import draw_str
 
 if __name__ == '__main__':
     model = build_model()
-    model.load_weights('models/model.11-0.6262.hdf5')
+    model_weights_path = os.path.join('models', best_model)
+    model.load_weights(model_weights_path)
 
     with open('scene_classes.csv') as file:
         reader = csv.reader(file)

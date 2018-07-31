@@ -9,3 +9,4 @@ verbose = 1
 batch_size = 32
 num_epochs = 1000
 patience = 50
+best_model = 'models/model.11-0.6262.hdf5'

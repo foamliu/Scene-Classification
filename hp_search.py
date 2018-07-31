@@ -16,7 +16,7 @@ from keras.models import Model
 from keras.preprocessing.image import ImageDataGenerator
 
 from config import img_width, img_height, num_classes, batch_size, train_data, valid_data, num_train_samples, \
-    num_valid_samples
+    num_valid_samples, best_model
 
 
 def data():
