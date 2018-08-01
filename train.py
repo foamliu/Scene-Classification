@@ -45,16 +45,16 @@ if __name__ == '__main__':
 
         def on_epoch_end(self, epoch, logs=None):
             fmt = 'models/model.%02d-%.4f.hdf5'
-            self.model_to_save.save(fmt % (epoch, logs['val_loss']))
+            self.model_to_save.save(fmt % (epoch, logs['val_acc']))
 
 
     # Callbacks
     tensor_board = keras.callbacks.TensorBoard(log_dir='./logs', histogram_freq=0, write_graph=True, write_images=True)
-    early_stop = EarlyStopping('val_loss', patience=patience)
-    reduce_lr = ReduceLROnPlateau('val_loss', factor=0.5, patience=int(patience / 4), verbose=1)
+    # early_stop = EarlyStopping('val_acc', patience=patience)
+    # reduce_lr = ReduceLROnPlateau('val_acc', factor=0.5, patience=int(patience / 4), verbose=1)
     trained_models_path = 'models/model'
     model_names = trained_models_path + '.{epoch:02d}-{val_loss:.4f}.hdf5'
-    model_checkpoint = ModelCheckpoint(model_names, monitor='val_loss', verbose=1, save_best_only=True)
+    model_checkpoint = ModelCheckpoint(model_names, monitor='val_acc', verbose=1, save_best_only=True)
 
     num_gpu = len(get_available_gpus())
     if num_gpu >= 2:
@@ -74,7 +74,7 @@ if __name__ == '__main__':
     adam = keras.optimizers.Adam(lr=1e-6)
     new_model.compile(optimizer=adam, loss='categorical_crossentropy', metrics=['accuracy'])
 
-    callbacks = [tensor_board, model_checkpoint, early_stop, reduce_lr]
+    callbacks = [tensor_board, model_checkpoint]
 
     # fine tune the model
     new_model.fit_generator(
