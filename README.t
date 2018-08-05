@@ -46,15 +46,15 @@ $ python demo.py
 1 | 2 | 3 | 4 |
 |---|---|---|---|
 |![image](https://github.com/foamliu/Scene-Classification/raw/master/images/0_out.png)  | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/1_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/2_out.png)| ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/3_out.png) |
-|教室, prob: 0.751|修理店, prob: 0.4876|沙漠, prob: 0.9402|酒吧, prob: 0.8236|
+|$(result_0)|$(result_1)|$(result_2)|$(result_3)|
 |![image](https://github.com/foamliu/Scene-Classification/raw/master/images/4_out.png)  | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/5_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/6_out.png)| ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/7_out.png) |
-|宫殿, prob: 0.6837|博物馆, prob: 0.6911|住宅, prob: 0.5338|会议室, prob: 0.9461|
+|$(result_4)|$(result_5)|$(result_6)|$(result_7)|
 |![image](https://github.com/foamliu/Scene-Classification/raw/master/images/8_out.png)  | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/9_out.png) |![image](https://github.com/foamliu/Scene-Classification/raw/master/images/10_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/11_out.png)|
-|集市, prob: 0.9636|桥, prob: 0.571|航站楼, prob: 0.9362|游乐场, prob: 0.5429|
+|$(result_8)|$(result_9)|$(result_10)|$(result_11)|
 |![image](https://github.com/foamliu/Scene-Classification/raw/master/images/12_out.png)  | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/13_out.png) |![image](https://github.com/foamliu/Scene-Classification/raw/master/images/14_out.png)| ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/15_out.png)|
-|保龄球馆, prob: 0.9995|漂流, prob: 0.998|水族馆, prob: 0.9898|停机坪, prob: 0.9965|
+|$(result_12)|$(result_13)|$(result_14)|$(result_15)|
 |![image](https://github.com/foamliu/Scene-Classification/raw/master/images/16_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/17_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/18_out.png) | ![image](https://github.com/foamliu/Scene-Classification/raw/master/images/19_out.png) |
-|跑马场, prob: 0.9966|实验室, prob: 0.8698|滑雪场, prob: 0.8024|会议室, prob: 0.6975|
+|$(result_16)|$(result_17)|$(result_18)|$(result_19)|
 
 
 ### 结果分析
