@@ -19,7 +19,7 @@
 你可以从中得到它 [Scene Classification Dataset](https://challenger.ai/datasets/scene):
 
 ### 性能
-用 14118 张测试图片进行评估，结果如下：
+用14118张测试图片计算平均准确率(mAP)，结果如下：
 
 | |Test A|Test B|
 |---|---|---|
