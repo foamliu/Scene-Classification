@@ -18,6 +18,14 @@
 
 你可以从中得到它 [Scene Classification Dataset](https://challenger.ai/datasets/scene):
 
+### 性能
+用 14118 张测试图片进行评估，结果如下：
+
+| |Test A|Test B|
+|---|---|---|
+|图片数|7040|7078|
+|Top3准确度|0.94346|0.91212|
+
 ## 用法
 
 ### 数据预处理
@@ -57,13 +65,7 @@ $ python demo.py
 |$(result_16)|$(result_17)|$(result_18)|$(result_19)|
 
 
-### 结果分析
-
+### 性能评估
 ```bash
-$ python analyze.py
+$ python evaluate.py
 ```
-
-| |Test A|Test B|
-|---|---|---|
-|图片数|7040|7078|
-|Top3准确度|0.94346|0.91212|
