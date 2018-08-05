@@ -47,9 +47,10 @@ if __name__ == '__main__':
         prob = np.max(preds)
         class_id = np.argmax(preds)
         print(scene_classes_dict[class_id])
-        results.append({'label': scene_classes_dict[class_id], 'prob': prob})
-        text = ('{}, prob: {:.4}'.format(scene_classes_dict[class_id], prob))
+        results.append({'label': scene_classes_dict[class_id], 'prob': '{:.4}'.format(prob)})
         cv.imwrite('images/{}_out.png'.format(i), image)
+
+    print(results)
     with open('results.json', 'w') as file:
         json.dump(results, file)
 
