@@ -8,7 +8,7 @@ import numpy as np
 from keras.applications.inception_resnet_v2 import preprocess_input
 from tqdm import tqdm
 
-from config import img_width, img_height
+from config import img_width, img_height, best_model
 from model import build_model
 
 if __name__ == '__main__':
@@ -19,7 +19,8 @@ if __name__ == '__main__':
     test_suite = args["testsuite"]
 
     model = build_model()
-    model.load_weights('models/model.11-0.6262.hdf5')
+    model_weights_path = os.path.join('models', best_model)
+    model.load_weights(model_weights_path)
 
     test_a = 'data/ai_challenger_scene_{}_20180103'.format(test_suite)
     image_folder = 'data/ai_challenger_scene_{0}_20180103/scene_{0}_images_20180103'.format(test_suite)
